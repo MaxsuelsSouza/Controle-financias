@@ -1,6 +1,8 @@
 using System.Text;
 using AutoMapper;
 using ControleFinancia.Api.Data;
+using ControleFinancia.Api.Domain.Repositorys.Classes;
+using ControleFinancia.Api.Domain.Repositorys.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -26,17 +28,10 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     builder.Services.AddDbContext<AplicationContext>(option =>
         option.UseNpgsql(connectionString), ServiceLifetime.Transient, ServiceLifetime.Transient);
 
-    // var config = new MapperConfiguration(cfg =>
-    // {
-    //     cfg.AddProfile<UsuarioProfile>();
-    //     cfg.AddProfile<ContatosProfile>();
-    // });
-
-    // IMapper mapper = config.CreateMapper();
-
     builder.Services
     .AddSingleton(builder.Configuration)
-    .AddSingleton(builder.Environment);
+    .AddSingleton(builder.Environment)
+    .AddScoped<IUsuarioRepository, UsuarioRepositorio>();
 }
 
 // Configura o serviços da API.
